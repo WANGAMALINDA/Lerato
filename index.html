@@ -257,7 +257,7 @@
     bottom: -2rem;
     left: -2rem;
     background: var(--black);
-    padding: 2rem;
+    padding: 1rem;
     width: 180px;
   }
 
@@ -352,6 +352,76 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 2px;
   }
+
+  /* ── GALLERY ── */
+  .gallery {
+    background: var(--black);
+    padding: 7rem 5rem;
+  }
+
+  .gallery .section-header { text-align: left; margin-bottom: 2rem; }
+
+  .gallery-grid {
+    column-count: 3;
+    column-gap: 1rem;
+  }
+
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    display: block;
+    height: auto;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:hover img { transform: scale(1.03); }
+
+  .gallery-item figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.6));
+    color: var(--cream);
+    font-size: 0.85rem;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.25s ease; 
+    z-index: 2000;
+    padding: 2rem;
+  }
+
+  .lightbox.open { visibility: visible; opacity: 1; }
+
+  .lightbox .lb-img { max-width: 90%; max-height: 80%; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border-radius: 6px; }
+
+  .lb-close, .lb-prev, .lb-next { position: absolute; background: transparent; border: none; color: var(--cream); font-size: 2rem; cursor: pointer; }
+  .lb-close { top: 1.5rem; right: 2rem; }
+  .lb-prev { left: 1.5rem; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 1.5rem; top: 50%; transform: translateY(-50%); }
+
+  .lb-caption { position: absolute; bottom: 3rem; color: var(--text-light); font-family: 'Cormorant Garamond', serif; font-size: 1rem; text-align: center; width: 100%; }
+
+  @media (max-width: 1100px) { .gallery-grid { column-count: 2; } }
+  @media (max-width: 600px) { .gallery-grid { column-count: 1; } }
 
   .service-card {
     background: rgba(255,255,255,0.03);
@@ -773,7 +843,22 @@
     </div>
   </div>
   <div class="hero-right">
-    <img src="/mnt/user-data/uploads/1.jpg" alt="Lerato — Chef & Caterer">
+    <img src="assets/1.jpg" alt="Lerato — Chef & Caterer">
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Taste the Craft</p>
+    <h2 class="section-title" style="color:var(--cream);">Food Gallery</h2>
+  </div>
+  <div class="gallery-grid">
+    <figure class="gallery-item reveal"><img src="assets/1.jpg" alt="Signature Platter"><figcaption>Signature Platter</figcaption></figure>
+    <figure class="gallery-item reveal"><img src="assets/3.jpg" alt="Seasonal Salad"><figcaption>Seasonal Salad</figcaption></figure>
+    <figure class="gallery-item reveal"><img src="assets/11.jpg" alt="Event Highlight"><figcaption>Event Highlight</figcaption></figure>
+    <figure class="gallery-item reveal"><img src="assets/1.jpg" alt="Sweet Ending"><figcaption>Sweet Ending</figcaption></figure>
+    <figure class="gallery-item reveal"><img src="assets/3.jpg" alt="Plated Course"><figcaption>Plated Course</figcaption></figure>
   </div>
 </section>
 
@@ -788,7 +873,7 @@
   </div>
   <div class="about-right reveal">
     <div class="about-img-wrap">
-      <img src="/mnt/user-data/uploads/3.jpg" alt="Lerato — Chef Profile">
+      <img src="assets/3.jpg" alt="Lerato — Chef Profile">
       <div class="about-badge">
         <p class="about-badge-text">"We serve an experience"</p>
       </div>
@@ -880,7 +965,7 @@
     </ul>
   </div>
   <div class="why-right reveal">
-    <img src="/mnt/user-data/uploads/6.jpg" alt="Culinary Presentation" class="why-img">
+    <img src="assets/11.jpg" alt="Culinary Presentation" class="why-img">
   </div>
 </section>
 
@@ -956,7 +1041,7 @@
 
 <!-- PROMISE -->
 <section class="promise">
-  <p class="promise-text reveal">"We deliver exceptional food and professionally curated experiences — ensuring every corporate event is executed with excellence, efficiency, and attention to detail."</p>
+  <p class="promise-text reveal">"We deliver exceptional food and professionally curated experiences while ensuring every corporate event is executed with excellence, efficiency, and attention to detail."</p>
   <p class="promise-author reveal">— Lerato, The Cooking Cyclist</p>
 </section>
 
@@ -1038,6 +1123,43 @@
       e.target.reset();
     }, 3000);
   }
+
+  // Lightbox gallery
+  (function(){
+    const galleryImgs = document.querySelectorAll('.gallery-item img');
+    if (!galleryImgs.length) return;
+
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lb-close" aria-label="close">×</button><button class="lb-prev" aria-label="prev">‹</button><img class="lb-img"><button class="lb-next" aria-label="next">›</button><div class="lb-caption"></div>';
+    document.body.appendChild(lightbox);
+
+    const lbImg = lightbox.querySelector('.lb-img');
+    const lbCaption = lightbox.querySelector('.lb-caption');
+    let current = 0;
+
+    function open(i){
+      const el = galleryImgs[i];
+      lbImg.src = el.src;
+      lbCaption.textContent = el.alt || '';
+      lightbox.classList.add('open');
+      current = i;
+    }
+    function close(){ lightbox.classList.remove('open'); }
+    function move(dir){ open((current + dir + galleryImgs.length) % galleryImgs.length); }
+
+    galleryImgs.forEach((img, i) => img.addEventListener('click', (e) => { open(i); }));
+    lightbox.querySelector('.lb-close').addEventListener('click', close);
+    lightbox.querySelector('.lb-next').addEventListener('click', () => move(1));
+    lightbox.querySelector('.lb-prev').addEventListener('click', () => move(-1));
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') move(1);
+      if (e.key === 'ArrowLeft') move(-1);
+    });
+  })();
 </script>
 </body>
 </html>
