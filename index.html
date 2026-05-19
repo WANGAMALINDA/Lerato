@@ -15,7 +15,8 @@
     --black: #1a1412;
     --warm-white: #faf7f2;
     --gold: #c9a84c;
-    --text-light: #e8ddd0;
+    --text-light: #e9ded1;
+    --section-max-width: 1200px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -70,12 +71,12 @@
 
   /* ── HERO ── */
   .hero {
-    min-height: 100vh;
+    min-height: 70vh;
     background: var(--black);
     display: grid;
     grid-template-columns: 1fr 1fr;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .hero::before {
@@ -87,9 +88,6 @@
   }
 
   .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     padding: 8rem 4rem 4rem 5rem;
     position: relative;
     z-index: 2;
@@ -328,7 +326,10 @@
 
   .section-header {
     text-align: center;
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
+    max-width: var(--section-max-width);
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .section-eyebrow {
@@ -356,19 +357,62 @@
   /* ── GALLERY ── */
   .gallery {
     background: var(--black);
-    padding: 7rem 5rem;
+    padding: 3rem 3rem;
   }
 
-  .gallery .section-header { text-align: left; margin-bottom: 2rem; }
+  .gallery .section-header { text-align: center; margin-bottom: 2.25rem; }
 
   .gallery-grid {
-    column-count: 3;
+    column-count: 4;
     column-gap: 1rem;
+    max-width: var(--section-max-width);
+    margin: 0 auto;
   }
+
+  .gallery-inner {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .gallery-quote {
+    background: transparent;
+    padding: 2rem 1rem 0;
+    border-radius: 6px;
+    text-align: center;
+    max-width: var(--section-max-width);
+    margin: auto auto;
+  }
+
+  .gallery-quote .promise-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+    color: var(--cream);
+    font-style: italic;
+    line-height: 1.45;
+    margin: 0 auto 1.25rem;
+    max-width: 900px;
+  }
+
+  .gallery-quote .promise-author { color: var(--gold); font-size: 0.85rem; letter-spacing: 0.25em; text-transform: uppercase; }
+
+  /* Center and constrain other major grids for consistent alignment */
+  .services-grid, .clients-grid, .values-grid, .why-list {
+    max-width: var(--section-max-width);
+    margin: 0 auto;
+  }
+
+  /* Make figcaptions slightly bolder for readability */
+  .gallery-item figcaption { font-weight: 400; font-size: 0.9rem; }
+
+  /* Improve contrast on dark sections */
+  .services, .gallery, .promise, footer { color: var(--text-light); }
+
+  /* Tidy footer alignment */
+  footer { align-items: center; }
 
   .gallery-item {
     break-inside: avoid;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
     position: relative;
     overflow: hidden;
     border-radius: 6px;
@@ -376,8 +420,8 @@
 
   .gallery-item img {
     width: 100%;
-    display: block;
-    height: auto;
+    display: inline;
+    height: 300px;
     transition: transform 0.3s ease;
   }
 
@@ -420,6 +464,7 @@
 
   .lb-caption { position: absolute; bottom: 3rem; color: var(--text-light); font-family: 'Cormorant Garamond', serif; font-size: 1rem; text-align: center; width: 100%; }
 
+  @media (min-width: 1200px) { .gallery-grid { column-count: 3; } }
   @media (max-width: 1100px) { .gallery-grid { column-count: 2; } }
   @media (max-width: 600px) { .gallery-grid { column-count: 1; } }
 
@@ -867,6 +912,27 @@
     </div>
   </div>
 </section>
+  <!-- GALLERY (with Quote) -->
+<section class="gallery" id="gallery">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Taste the Craft</p>
+    <h2 class="section-title" style="color:var(--cream);">Food Gallery</h2>
+  </div>
+  <div class="gallery-inner">
+    <div class="gallery-grid">
+      <figure class="gallery-item reveal"><img src="assets/Assets/1.jpg" alt="Signature Platter"><figcaption>Signature Platter</figcaption></figure>
+      <figure class="gallery-item reveal"><img src="assets/Assets/17.jpg" alt="Seasonal Salad"><figcaption>Seasonal Salad</figcaption></figure>
+      <figure class="gallery-item reveal"><img src="assets/Assets/31.jpg" alt="Event Highlight"><figcaption>Event Highlight</figcaption></figure>
+      <figure class="gallery-item reveal"><img src="assets/Assets/114744.jpg" alt="Sweet Ending"><figcaption>Sweet Ending</figcaption></figure>
+      <figure class="gallery-item reveal"><img src="assets/Assets/114747.jpg" alt="Sweet Ending"><figcaption>Sweet Ending</figcaption></figure>
+      <figure class="gallery-item reveal"><img src="assets/Assets/29.jpg" alt="Plated Course"><figcaption>Plated Course</figcaption></figure>
+    </div>
+    <aside class="gallery-quote reveal">
+      <p class="promise-text">"We deliver exceptional food and professionally curated experiences while ensuring every corporate event is executed with excellence, efficiency, and attention to detail."</p>
+      <p class="promise-author">— Lerato, The Cooking Cyclist</p>
+    </aside>
+  </div>
+</section>
 
 <!-- MISSION / VISION -->
 <section class="mission" id="mission">
@@ -1026,26 +1092,7 @@
   </div>
 </section>
 
-<!-- PROMISE -->
-<section class="promise">
-  <p class="promise-text reveal">"We deliver exceptional food and professionally curated experiences while ensuring every corporate event is executed with excellence, efficiency, and attention to detail."</p>
-  <p class="promise-author reveal">— Lerato, The Cooking Cyclist</p>
-</section>
 
-  <!-- GALLERY -->
-<section class="gallery" id="gallery">
-  <div class="section-header reveal">
-    <p class="section-eyebrow">Taste the Craft</p>
-    <h2 class="section-title" style="color:var(--cream);">Food Gallery</h2>
-  </div>
-  <div class="gallery-grid">
-    <figure class="gallery-item reveal"><img src="assets/Assets/1.jpg" alt="Signature Platter"><figcaption>Signature Platter</figcaption></figure>
-    <figure class="gallery-item reveal"><img src="assets/Assets/17.jpg" alt="Seasonal Salad"><figcaption>Seasonal Salad</figcaption></figure>
-    <figure class="gallery-item reveal"><img src="assets/Assets/31.jpg" alt="Event Highlight"><figcaption>Event Highlight</figcaption></figure>
-    <figure class="gallery-item reveal"><img src="assets/Assets/114744.jpg" alt="Sweet Ending"><figcaption>Sweet Ending</figcaption></figure>
-    <figure class="gallery-item reveal"><img src="assets/Assets/29.jpg" alt="Plated Course"><figcaption>Plated Course</figcaption></figure>
-  </div>
-</section>
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="contact-left reveal">
@@ -1092,7 +1139,7 @@
       <button type="submit" class="btn-primary" style="align-self:flex-start; cursor:pointer;">Send Enquiry</button>
     </form>
   </div>
-</section
+</section>
 
 <!-- FOOTER -->
 <footer>
