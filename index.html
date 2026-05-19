@@ -1402,7 +1402,7 @@
       current = i;
     }
     function close(){ lightbox.classList.remove('open'); }
-    function move(dir){ open((current + dir + galleryImgs.length) % galleryImgs.length); }
+    function move(dir){ open((current + dir + galleryImgs.length) % galleryImgs.length);}
 
     galleryImgs.forEach((img, i) => img.addEventListener('click', (e) => { open(i); }));
     lightbox.querySelector('.lb-close').addEventListener('click', close);
